@@ -3,26 +3,18 @@ using UnityEngine;
 
 public class House : MonoBehaviour
 {
-    public event Action<bool> WentHouse;
+    public event Action WentHouse;
+    public event Action ExitHouse;
 
     private void OnTriggerEnter(Collider other)
     {
-        ReportEntryOrExit(other, true);
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        ReportEntryOrExit(other, true);
+        if (other.TryGetComponent<Rogue>(out Rogue rogue))
+            WentHouse?.Invoke();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        ReportEntryOrExit(other,false);
-    }
-
-    private void ReportEntryOrExit(Collider other,bool value)
-    {
         if (other.TryGetComponent<Rogue>(out Rogue rogue))
-            WentHouse?.Invoke(value);
+            ExitHouse?.Invoke();
     }
 }

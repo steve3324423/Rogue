@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -6,11 +7,7 @@ public class Signaling : MonoBehaviour
     [SerializeField] private House _house;
 
     private AudioSource _audioSource;
-    private bool _isSignalingWork;
     private float _speed = .5f;
-    private float maxVolume = 1f;
-    private float minValue = 0f;
-
 
     private void Awake()
     {
@@ -20,28 +17,36 @@ public class Signaling : MonoBehaviour
     private void OnEnable()
     {
         _house.WentHouse += OnWentHouse;
-    }
-
-    private void Update()
-    {
-        if (_isSignalingWork)
-            SetVolume(maxVolume);
-        else
-            SetVolume(minValue);
+        _house.ExitHouse += OnExitHouse;
     }
 
     private void OnDisable()
     {
         _house.WentHouse -= OnWentHouse;
+        _house.ExitHouse -= OnExitHouse;
     }
 
-    private void OnWentHouse(bool isEnable)
+    private void OnWentHouse()
     {
-        _isSignalingWork = isEnable;
+        float valueVolume = 1f;
+        StartCoroutine(SetVolume(valueVolume));
     }
 
-    private void SetVolume(float targetValueVolume)
+    private void OnExitHouse()
     {
-        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, targetValueVolume,_speed * Time.deltaTime);
+        float valueVolume = 0f;
+        StartCoroutine(SetVolume(valueVolume));
+    }
+
+    private IEnumerator SetVolume(float targetValueVolume)
+    {
+        float time = 1f;
+
+        while(time > 0)
+        {
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, targetValueVolume, _speed * Time.deltaTime);
+            time -= Time.deltaTime;
+            yield return null;
+        }
     }
 }
