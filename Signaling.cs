@@ -16,14 +16,14 @@ public class Signaling : MonoBehaviour
 
     private void OnEnable()
     {
-        _house.WentHouse += OnWentHouse;
-        _house.ExitHouse += OnExitHouse;
+        _house.WentPremises += OnWentHouse;
+        _house.ExitPremises += OnExitHouse;
     }
 
     private void OnDisable()
     {
-        _house.WentHouse -= OnWentHouse;
-        _house.ExitHouse -= OnExitHouse;
+        _house.WentPremises -= OnWentHouse;
+        _house.ExitPremises -= OnExitHouse;
     }
 
     private void OnWentHouse()

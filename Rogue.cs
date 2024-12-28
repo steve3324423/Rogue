@@ -14,10 +14,10 @@ public class Rogue : MonoBehaviour
 
     private void Update()
     {
-        SetTarget();
+        Moves();
     }
 
-    private void SetTarget()
+    private void Moves()
     {
         Vector3 offset = transform.position - _target.position;
         float minDistance = .01f;
